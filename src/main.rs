@@ -10,7 +10,7 @@ use std::{thread, time};
 struct Args {
     /// Stream name filter
     #[arg(short, long)]
-    stream_name_filter: Option<String>,
+    stream_name_filter: Option<Vec<String>>,
 }
 
 fn main() {
@@ -57,8 +57,8 @@ fn main() {
             let time: NaiveDateTime = row.get(7);
             cursor = global_position;
 
-            if let Some(filter) = &args.stream_name_filter {
-                if !stream_name.contains(filter) {
+            if let Some(filters) = &args.stream_name_filter {
+                if !filters.iter().any(|filter| stream_name.contains(filter)) {
                     continue;
                 }
             }
