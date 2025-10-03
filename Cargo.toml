@@ -1,7 +1,11 @@
 [package]
-name = "mdb-print"
+name = "db-tail"
 version = "0.1.0"
 edition = "2021"
+description = "A command-line tool to tail message db."
+repository = "https://github.com/jacobat/db-tail"
+license = "MIT"
+readme = "README.md"
 
 [dependencies]
 postgres = { version = "0.19", features = ["with-uuid-1", "with-serde_json-1", "with-chrono-0_4"] }

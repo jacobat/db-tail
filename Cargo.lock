@@ -259,6 +259,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "db-tail"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "colored_json",
+ "postgres",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -458,19 +471,6 @@ checksum = "d89e7ee0cfbedfc4da3340218492196241d89eefb6dab27de5df917a6d2e78cf"
 dependencies = [
  "cfg-if",
  "digest",
-]
-
-[[package]]
-name = "mdb-print"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "colored_json",
- "postgres",
- "serde",
- "serde_json",
- "uuid",
 ]
 
 [[package]]
