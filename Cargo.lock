@@ -223,6 +223,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 
 [[package]]
+name = "colored"
+version = "3.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fde0e0ec90c9dfb3b4b1a0891a7dcd0e2bffde2f7efed5fe7c9bb00e5bfb915e"
+dependencies = [
+ "windows-sys 0.52.0",
+]
+
+[[package]]
 name = "colored_json"
 version = "5.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -232,6 +241,23 @@ dependencies = [
  "serde_json",
  "yansi",
 ]
+
+[[package]]
+name = "colorhash"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc46e0d95fa189470a41f716acf52e4e2b7100342578ccbd06f5b8f29a488a5c"
+dependencies = [
+ "byteorder",
+ "colorsys",
+ "hmac-sha256",
+]
+
+[[package]]
+name = "colorsys"
+version = "0.6.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "54261aba646433cb567ec89844be4c4825ca92a4f8afba52fc4dd88436e31bbd"
 
 [[package]]
 name = "core-foundation-sys"
@@ -264,7 +290,9 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "clap",
+ "colored",
  "colored_json",
+ "colorhash",
  "postgres",
  "serde",
  "serde_json",
@@ -395,6 +423,12 @@ checksum = "6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e"
 dependencies = [
  "digest",
 ]
+
+[[package]]
+name = "hmac-sha256"
+version = "1.1.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ad6880c8d4a9ebf39c6e8b77007ce223f646a4d21ce29d99f70cb16420545425"
 
 [[package]]
 name = "iana-time-zone"

@@ -1,6 +1,8 @@
 use chrono::NaiveDateTime;
 use clap::Parser;
+use colored::Colorize;
 use colored_json::{Color, ColoredFormatter, CompactFormatter, Styler};
+use colorhash::{ColorHash, Rgb};
 use postgres::{Client, NoTls};
 use serde_json::Value;
 use std::{thread, time};
@@ -53,6 +55,7 @@ fn main() {
             let metadata: Option<Value> = row.get(4);
             let pretty_metadata = f.clone().to_colored_json_auto(&metadata);
             let stream_name: &str = row.get(5);
+            let stream_name_color = ColorHash::new().rgb(stream_name.split("-").next().unwrap_or("default"));
             let event_type: &str = row.get(6);
             let time: NaiveDateTime = row.get(7);
             cursor = global_position;
@@ -63,16 +66,39 @@ fn main() {
                 }
             }
 
+            println!();
             println!("- [ Global Position: {} ] --------------------------",global_position);
-            println!("| Stream name | {}", stream_name);
-            println!("| Position    | {}", position);
-            println!("| Type        | {}", event_type);
-            println!("| Time        | {}", time);
+            print!("| Stream name | ");
+            println_colored(stream_name, &stream_name_color);
+            // println!("| Stream name | {}", colorize(stream_name, stream_name_color));
+            print!("| Position    | ");
+            println_colored(&position.to_string(), &stream_name_color);
+            print!("| Type        | ");
+            println_colored(event_type, &stream_name_color);
+            print!("| Time        | ");
+            println_colored(&time.to_string(), &stream_name_color);
             println!("| Data        | {}", pretty_data.unwrap_or("Null".to_string()));
             println!("| Metadata    | {}", pretty_metadata.unwrap_or("Null".to_string()));
+            println!("----------------------------------------------------");
         }
         let duration = time::Duration::from_millis(50);
 
         thread::sleep(duration);
     }
+}
+
+fn println_colored(string: &str, stream_name_color: &Rgb) {
+    println!("{}", colorize(string, stream_name_color));
+}
+
+fn colorize(string: &str, stream_name_color: &Rgb) -> colored::ColoredString {
+    string.truecolor(
+        make_light(stream_name_color.red()),
+        make_light(stream_name_color.green()),
+        make_light(stream_name_color.blue()),
+    )
+}
+
+fn make_light(color: f64) -> u8 {
+    ((color / 2.0) + 128.0) as u8
 }
