@@ -13,6 +13,10 @@ struct Args {
     /// Stream name filter
     #[arg(short, long)]
     stream_name_filter: Option<Vec<String>>,
+
+    /// Keep monitoring table for new records
+    #[arg(short, long, default_value_t = false)]
+    follow: bool,
 }
 
 fn main() {
@@ -80,6 +84,9 @@ fn main() {
             println!("| Data        | {}", pretty_data.unwrap_or("Null".to_string()));
             println!("| Metadata    | {}", pretty_metadata.unwrap_or("Null".to_string()));
             println!("----------------------------------------------------");
+        }
+        if !args.follow {
+            break;
         }
         let duration = time::Duration::from_millis(50);
 
