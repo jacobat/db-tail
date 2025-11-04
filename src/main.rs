@@ -66,6 +66,7 @@ fn main() {
 
             if cursor > 0 && row.is_none() {
                 cursor = 0;
+                print!("{}[2J", 27 as char);
                 println!("Database was reset, starting over");
             }
 
