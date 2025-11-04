@@ -147,7 +147,7 @@ fn ranges_query(ranges: Vec<(i64, i64)>) -> String {
     "SELECT global_position, position, id, data, metadata, stream_name, type, time FROM message_store.messages WHERE ".to_string() + &query
 }
 
-fn range_params<'a>(ranges: &'a Vec<(i64, i64)>) -> Vec<&'a (dyn postgres::types::ToSql + Sync)> {
+fn range_params(ranges: &[(i64, i64)]) -> Vec<&(dyn postgres::types::ToSql + Sync)> {
     ranges
         .iter()
         .flat_map(|(start, end)| {
