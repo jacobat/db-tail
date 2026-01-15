@@ -14,6 +14,10 @@ struct Args {
     #[arg(short, long)]
     stream_name_filter: Option<Vec<String>>,
 
+    /// Type filter
+    #[arg(short, long)]
+    type_filter: Option<Vec<String>>,
+
     /// Range of global positions to display
     #[arg(short, long)]
     range: Option<Vec<String>>,
@@ -53,7 +57,7 @@ fn main() {
             .query(&query, params.as_slice())
             .expect("Could not execute query");
         for row in rows {
-            print_row(&row, &f, &args.stream_name_filter);
+            print_row(&row, &f, &args.stream_name_filter, &args.type_filter);
         }
     } else {
         loop {
@@ -71,7 +75,7 @@ fn main() {
             }
 
             for row in client.query("SELECT global_position, position, id, data, metadata, stream_name, type, time FROM message_store.messages WHERE global_position > $1 ORDER BY global_position", &[&cursor]).expect("Could not execute query") {
-            print_row(&row, &f, &args.stream_name_filter);
+            print_row(&row, &f, &args.stream_name_filter, &args.type_filter);
             cursor = row.get(0);
         }
             if !args.follow {
@@ -88,6 +92,7 @@ fn print_row(
     row: &postgres::Row,
     f: &ColoredFormatter<CompactFormatter>,
     stream_name_filter: &Option<Vec<String>>,
+    type_filter: &Option<Vec<String>>,
 ) {
     let global_position: i64 = row.get(0);
     let position: i64 = row.get(1);
@@ -103,6 +108,12 @@ fn print_row(
 
     if let Some(filters) = stream_name_filter {
         if !filters.iter().any(|filter| stream_name.contains(filter)) {
+            return;
+        }
+    }
+
+    if let Some(filters) = type_filter {
+        if !filters.iter().any(|filter| event_type.contains(filter)) {
             return;
         }
     }
